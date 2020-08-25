@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Button, Text } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 
 import { add, minus, asyncAdd } from '../../actions/counter'
 
@@ -21,25 +21,47 @@ import './index.scss'
   }
 }))
 class Index extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      data:[]
+    }
+
+  }
   componentWillReceiveProps (nextProps) {
     console.log(this.props, nextProps)
   }
 
   componentWillUnmount () { }
 
-  componentDidShow () { }
+  componentDidShow () {
+    console.log(11111);
+
+    Taro.request({
+      url: 'http://v.juhe.cn/joke/content/list.php?sort=asc&page=&pagesize=&time=1418816972&key=b10e53b87653fa56232316737b278227', //仅为示例，并非真实的接口地址
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        console.log(res.result.data)
+      }
+    })
+   }
 
   componentDidHide () { }
 
   render () {
     return (
-      <View className='index'>
-        <Button className='add_btn' onClick={this.props.add}>+</Button>
-        <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-        <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
-      </View>
+      <ScrollView
+        className='scrollview'
+      >
+      {this.state.data.map((item,index)=>{
+        return  <View key={index}>
+        <View>{item.content}</View>
+        <View>{item.updatetime}</View>
+        </View>
+      })}
+      </ScrollView>
     )
   }
 }
