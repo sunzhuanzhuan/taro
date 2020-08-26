@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { connect } from 'react-redux'
 import { View, ScrollView } from '@tarojs/components'
 
@@ -28,22 +29,22 @@ class Index extends Component {
     }
 
   }
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
-  }
 
   componentWillUnmount () { }
 
   componentDidShow () {
-    console.log(11111);
-
     Taro.request({
-      url: 'http://v.juhe.cn/joke/content/list.php?sort=asc&page=&pagesize=&time=1418816972&key=b10e53b87653fa56232316737b278227', //仅为示例，并非真实的接口地址
+      url: '/api/homepage-v3',
+      mode: 'no-cors',
+      data:{
+        platform:'wap',
+        rent_mode: 2,
+      },
       header: {
-        'content-type': 'application/json' // 默认值
+        'content-type': 'application/x-www-form-urlencoded' // 默认值
       },
       success: function (res) {
-        console.log(res.result.data)
+        console.log(res)
       }
     })
    }
@@ -54,11 +55,11 @@ class Index extends Component {
     return (
       <ScrollView
         className='scrollview'
-      >
+      >33
       {this.state.data.map((item,index)=>{
         return  <View key={index}>
-        <View>{item.content}</View>
-        <View>{item.updatetime}</View>
+        <View>{item.content}11</View>
+        <View>{item.updatetime}22</View>
         </View>
       })}
       </ScrollView>
