@@ -1,65 +1,64 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { connect } from 'react-redux'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView,Image } from '@tarojs/components'
 
 import { add, minus, asyncAdd } from '../../actions/counter'
 
 import './index.scss'
+import api from '../../api'
 
-
-@connect(({ counter }) => ({
-  counter
-}), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
-  }
-}))
 class Index extends Component {
-  constructor(props){
-    super(props)
-    this.state={
-      data:[]
-    }
-
+  state={
+    data:[]
   }
+
 
   componentWillUnmount () { }
 
   componentDidShow () {
-    Taro.request({
-      url: '/api/homepage-v3',
-      mode: 'no-cors',
+   let that = this;
+    let params={
+      url:'joke/content/list.php',
       data:{
-        platform:'wap',
-        rent_mode: 2,
-      },
-      header: {
-        'content-type': 'application/x-www-form-urlencoded' // 默认值
-      },
-      success: function (res) {
-        console.log(res)
+        sort:'asc',
+        page:1,
+        pagesize:20,
+        time:1418816972,
+        key:'b10e53b87653fa56232316737b278227'
       }
+    }
+    api.get(params)
+    let obj ={
+      url:'/toutiao/index',
+      data:{
+        key:'a61227231b675e6097a1de4716456294'
+      }
+    }
+    api.get(obj).then((res)=>{
+      that.setState({
+        data:res.data.result.data
+      })
     })
+
    }
 
   componentDidHide () { }
+  onScrollToLower(e){
+    console.log(e)
+  }
 
   render () {
     return (
       <ScrollView
+      scrollY
         className='scrollview'
-      >33
+        onScrollToLower={onScrollToLower}
+      >
       {this.state.data.map((item,index)=>{
-        return  <View key={index}>
-        <View>{item.content}11</View>
-        <View>{item.updatetime}22</View>
+        return  <View className='listItem' key={index}>
+        <Image src={item.thumbnail_pic_s} className='imgIcon' mode='scaleToFill'></Image>
+        <View className className='titleIcon'>{item.title}</View>
         </View>
       })}
       </ScrollView>

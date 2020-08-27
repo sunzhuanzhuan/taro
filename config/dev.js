@@ -1,5 +1,5 @@
 // devServer实现跨越请求
-console.log(11111)
+console.log(22222)
 module.exports = {
   env: {
     NODE_ENV: '"development"'
@@ -8,14 +8,21 @@ module.exports = {
   },
   mini: {},
   h5: {
-    devServe:{
-      host: 'http://172.16.121.158/',
-      port: 10086,
+    devServer:{
+      host: 'dev.v.juhe.cn',
+      port: 8080,
       proxy:{
-        '/api':{
-          target: 'https://ms-api.caibowen.net/',
+        '/joke':{
+          target: 'http://v.juhe.cn/',
           changeOrigin: true,
-        }
+
+        },
+        '/toutiao':{
+          target: 'http://v.juhe.cn/',
+          changeOrigin: true,
+
+        },
+
       }
     }
   }
