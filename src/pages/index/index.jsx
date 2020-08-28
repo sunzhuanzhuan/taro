@@ -19,7 +19,7 @@ class Index extends Component {
   componentDidShow () {
    let that = this;
     let params={
-      url:'joke/content/list.php',
+      url:'/joke/content/list.php',
       data:{
         sort:'asc',
         page:1,
@@ -44,16 +44,20 @@ class Index extends Component {
    }
 
   componentDidHide () { }
-  onScrollToLower(e){
-    console.log(e)
+  ScrollToLower=()=>{
+    console.log(11111)
   }
-
+  ScrollToUpper(){
+    console.log(22222)
+  }
   render () {
     return (
       <ScrollView
-      scrollY
+        scrollY
+        refresherEnabled
         className='scrollview'
-        onScrollToLower={onScrollToLower}
+        onScrollToLower={this.ScrollToLower}
+        onScrollToUpper={this.ScrollToUpper}
       >
       {this.state.data.map((item,index)=>{
         return  <View className='listItem' key={index}>
